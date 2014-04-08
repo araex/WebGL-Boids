@@ -1,5 +1,5 @@
 define([
-	'modules/Boid',
+	'modules/boid',
 	'threejs',
 	'underscore'
 ], function (Boid, THREE, _) {

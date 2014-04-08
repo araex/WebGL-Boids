@@ -5,8 +5,8 @@ require.config({
 		underscore: 'libs/underscore-min',
 		threejs: 'libs/three',
 		stats: 'libs/stats.min',
-		detector: 'libs/Detector',
-		orbitcontrols: 'libs/OrbitControls',
+		detector: 'libs/detector',
+		orbitcontrols: 'libs/orbitcontrols',
 		datgui: 'libs/dat.gui.min'
 	},
 
