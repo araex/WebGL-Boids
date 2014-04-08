@@ -1,6 +1,6 @@
 define([
 	'underscore',
-	'modules/swarm',
+	'modules/Swarm',
 	'threejs',
 	'detector',
 	'stats',

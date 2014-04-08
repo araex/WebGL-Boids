@@ -1,5 +1,5 @@
 define([
-	'modules/prey',
+	'modules/Prey',
 	'threejs',
 	'underscore'
 ], function (Prey, THREE, _) {
