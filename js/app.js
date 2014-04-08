@@ -73,6 +73,7 @@ define([
 
 	function createGui() {
 		gui = new window.dat.GUI();
+		gui.add(swarm, 'simulationSpeed', 0, 2);
 		gui.add(swarm, 'preyDistance', 0, 20);
 		gui.add(swarm, 'preyMaxSpeed', 0, 100);
 		gui.add(swarm, 'preyAcceleration', 0, 5);
@@ -112,6 +113,7 @@ define([
 
 	function render() {
 		var deltaT = clock.getDelta();
+		Math.max(deltaT, 0.5);
 
 		swarm.update(deltaT);
 

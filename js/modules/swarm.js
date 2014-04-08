@@ -8,6 +8,7 @@ define([
 		var self = this;
 
 		// config
+		self.simulationSpeed = 1.0;
 		self.preyCenterForce = 0.0002;
 		self.preySize = 0.5;
 		self.preyDistance = 2;
@@ -23,6 +24,7 @@ define([
 		var flatPrey;
 
 		self.update = function (deltaT) {
+			deltaT *= self.simulationSpeed;
 			_.each(flatPrey, function (element) {
 				element.update(self, deltaT);
 			});
