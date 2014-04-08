@@ -1,4 +1,5 @@
 require.config({
+	baseUrl: 'js',
 	paths: {
 		threejs: 'libs/three',
 		underscore: 'libs/underscore-min',
