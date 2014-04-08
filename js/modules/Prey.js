@@ -37,10 +37,10 @@ define([
 				// using the squared length to increase performance
 				if (distance.lengthSq() >= swarm.preyDistance * swarm.preyDistance) {
 					// too far away, go towards it
-					attraction.add(distance.multiplyScalar(swarm.preyAttract));
+					attraction.add(distance.multiplyScalar(swarm.preyAttractForce));
 				} else {
 					// to close, go away
-					attraction.add(distance.multiplyScalar(swarm.preyRepel));
+					attraction.add(distance.multiplyScalar(swarm.preyRepelForce));
 				}
 			});
 

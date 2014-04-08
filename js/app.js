@@ -4,13 +4,14 @@ define([
 	'threejs',
 	'detector',
 	'stats',
-	'orbitcontrols'
-], function (_, Swarm, THREE, Detector, Stats, OrbitControls) {
+	'orbitcontrols',
+	'datgui'
+], function (_, Swarm, THREE, Detector, Stats, OrbitControls, dat) {
 	if (!Detector.webgl) Detector.addGetWebGLMessage();
 
 	var container, stats;
 
-	var camera, scene, renderer, swarm, clock;
+	var camera, scene, renderer, swarm, clock, gui, material, meshes = [];
 
 	init();
 	animate();
@@ -36,7 +37,7 @@ define([
 
 		swarm = new Swarm();
 		var geometry = new THREE.SphereGeometry(swarm.preySize, 20, 10);
-		var material = new THREE.MeshPhongMaterial({
+		material = new THREE.MeshPhongMaterial({
 			color: 0xffffff,
 			emissive: 0x37a635,
 			transparent: true,
@@ -48,6 +49,7 @@ define([
 			var object = boidMesh.clone();
 			object.position = element.position;
 			scene.add(object);
+			meshes.push(object);
 		});
 
 		renderer = new THREE.WebGLRenderer({
@@ -62,12 +64,33 @@ define([
 		stats.domElement.style.top = '0px';
 		container.appendChild(stats.domElement);
 
-		//
-
 		window.addEventListener('resize', onWindowResize, false);
 
 		clock = new THREE.Clock();
 
+		createGui();
+	}
+
+	function createGui() {
+		gui = new window.dat.GUI();
+		gui.add(swarm, 'preyDistance', 0, 20);
+		gui.add(swarm, 'preyMaxSpeed', 0, 100);
+		gui.add(swarm, 'preyAcceleration', 0, 5);
+		gui.add(swarm, 'preyCenterForce', -0.002, 0.002);
+		gui.add(swarm, 'preyAttractForce', 0, 20);
+		gui.add(swarm, 'preyRepelForce', -20, 0);
+
+		var colorWrapper = {
+			color: '#37a635'
+		};
+		var colorController = gui.addColor(colorWrapper, 'color');
+		colorController.onChange(function (colorValue) {
+			var colorObject = new THREE.Color(colorValue);
+			colorObject.setStyle(colorValue);
+			_.each(meshes, function (obj) {
+				obj.material.emissive = colorObject;
+			});
+		});
 	}
 
 	function onWindowResize() {

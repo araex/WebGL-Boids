@@ -5,7 +5,8 @@ require.config({
 		threejs: 'libs/three',
 		stats: 'libs/stats.min',
 		detector: 'libs/Detector',
-		orbitcontrols: 'libs/OrbitControls'
+		orbitcontrols: 'libs/OrbitControls',
+		datgui: 'libs/dat.gui.min'
 	},
 
 	shim: {

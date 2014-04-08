@@ -11,10 +11,10 @@ define([
 		self.preyCenterForce = 0.0002;
 		self.preySize = 0.5;
 		self.preyDistance = 2;
-		self.preyAttract = 2;
-		self.preyRepel = -5;
-		self.preyAcceleration = 0.5;
-		self.preyMaxSpeed = 10;
+		self.preyAttractForce = 5;
+		self.preyRepelForce = -5;
+		self.preyAcceleration = 1.25;
+		self.preyMaxSpeed = 25;
 		var INIT_ROW_COUNT = 40;
 		var INIT_COL_COUNT = 40;
 
