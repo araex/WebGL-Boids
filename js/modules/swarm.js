@@ -16,8 +16,8 @@ define([
 		self.preyRepelForce = -5;
 		self.preyAcceleration = 1.25;
 		self.preyMaxSpeed = 25;
-		var INIT_ROW_COUNT = 50;
-		var INIT_COL_COUNT = 50;
+		var INIT_ROW_COUNT = 40;
+		var INIT_COL_COUNT = 40;
 
 		// private vars
 		var prey = [];
@@ -26,7 +26,7 @@ define([
 		self.update = function (deltaT) {
 			// prevent the boids from floating off if the window is not in focus.
 			deltaT = Math.min(deltaT, 0.1);
-
+			console.log(deltaT);
 			deltaT *= self.simulationSpeed;
 			_.each(flatPrey, function (element) {
 				element.update(self, deltaT);

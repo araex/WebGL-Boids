@@ -44,6 +44,9 @@ define([
 	function initScene() {
 		scene = new THREE.Scene();
 		scene.add(new THREE.AmbientLight(0x404040));
+		var directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+		directionalLight.position.set(0, 1, 0);
+		scene.add(directionalLight);
 
 		swarm = new Swarm();
 		var geometry = new THREE.SphereGeometry(swarm.preySize, 20, 10);
