@@ -1,0 +1,6 @@
+# Temp-Files
+*.tmp
+*.swp
+*~
+.~*
+.DS_Store
