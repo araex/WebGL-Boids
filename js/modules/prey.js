@@ -22,8 +22,9 @@ define([
 
 			var attraction = __calcNeighbourAttraction();
 			__applyCenterForce(attraction);
+			__applyPredatorAvoidance(attraction);
 			__updateVelocity(attraction);
-			__applyVelocity(self.velocity, deltaT);
+			self.applyVelocity(self.velocity, deltaT);
 		};
 
 		var __calcNeighbourAttraction = function () {
@@ -47,6 +48,16 @@ define([
 			return attraction;
 		};
 
+		var __applyPredatorAvoidance = function (attraction){
+			var distanceToPredator = new THREE.Vector3();
+			_.each(swarm.getPredators(), function (predator) {
+				distanceToPredator.subVectors(predator.position, self.position);
+				if (distanceToPredator.lengthSq() < swarm.fearRadius * swarm.fearRadius){
+					attraction.add(distanceToPredator.normalize().multiplyScalar(swarm.fearForce));
+				}
+			});
+		};
+
 		var __applyCenterForce = function (attraction) {
 			var centerDistance = new THREE.Vector3(0, 0, 0);
 			centerDistance.sub(self.position);
@@ -62,12 +73,6 @@ define([
 				self.velocity.normalize();
 				self.velocity.multiplyScalar(swarm.preyMaxSpeed);
 			}
-		};
-
-		var __applyVelocity = function (v, t) {
-			var v2 = v.clone();
-			v2.multiplyScalar(t);
-			self.position.add(v2);
 		};
 
 		var __init = function () {

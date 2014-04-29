@@ -6,7 +6,7 @@ define([
 	'stats',
 	'orbitcontrols',
 	'datgui'
-], function (_, Swarm, THREE, Detector, Stats, OrbitControls, dat) {
+], function(_, Swarm, THREE, Detector, Stats, OrbitControls, dat) {
 	if (!Detector.webgl) Detector.addGetWebGLMessage();
 
 	// THREE & GUI
@@ -37,7 +37,7 @@ define([
 
 	function initCamera() {
 		camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
-		camera.position.z = 200;
+		camera.position.z = 300;
 		controls = new THREE.OrbitControls(camera);
 	}
 
@@ -49,17 +49,34 @@ define([
 		scene.add(directionalLight);
 
 		swarm = new Swarm();
-		var geometry = new THREE.SphereGeometry(swarm.preySize, 20, 10);
-		var material = new THREE.MeshPhongMaterial({
+		var geometryPrey = new THREE.SphereGeometry(swarm.preySize, 20, 10);
+		var materialPrey = new THREE.MeshPhongMaterial({
 			color: 0xffffff,
 			emissive: 0x37a635,
 			transparent: true,
 			opacity: 0.5
 		});
-		var boidMesh = new THREE.Mesh(geometry, material);
 
-		_.each(swarm.getPrey(), function (element) {
-			var object = boidMesh.clone();
+		var materialPredator= new THREE.MeshPhongMaterial({
+			color: 0xffffff,
+			emissive: 0xa83636,
+			transparent: true,
+			opacity: 0.5
+		});
+		var geometryPredator= new THREE.SphereGeometry(swarm.predatorSize, 20, 10);
+
+		var meshPrey = new THREE.Mesh(geometryPrey, materialPrey);
+		var meshPradator = new THREE.Mesh(geometryPredator, materialPredator);
+
+		_.each(swarm.getPrey(), function(element) {
+			var object = meshPrey.clone();
+			object.position = element.position;
+			scene.add(object);
+			meshes.push(object);
+		});
+
+		_.each(swarm.getPredators(), function(element) {
+			var object = meshPradator.clone();
 			object.position = element.position;
 			scene.add(object);
 			meshes.push(object);
@@ -88,17 +105,22 @@ define([
 		gui.add(swarm, 'preyMaxSpeed', 0, 100);
 		gui.add(swarm, 'preyAcceleration', 0, 5);
 		gui.add(swarm, 'preyCenterForce', -0.002, 0.002);
-		gui.add(swarm, 'preyAttractForce', 0, 20);
-		gui.add(swarm, 'preyRepelForce', -20, 0);
+		gui.add(swarm, 'preyAttractForce', -10, 30);
+		gui.add(swarm, 'preyRepelForce', -60, 20);
+		gui.add(swarm, 'predatorAcceleration', 0, 10);
+		gui.add(swarm, 'predatorMaxSpeed', 0, 200);
+		gui.add(swarm, 'killRadius', 5, 30);
+		gui.add(swarm, 'fearRadius', 10, 100);
+		gui.add(swarm, 'fearForce', -800000, 0);
 
 		var colorWrapper = {
 			color: '#37a635'
 		};
 		var colorController = gui.addColor(colorWrapper, 'color');
-		colorController.onChange(function (colorValue) {
+		colorController.onChange(function(colorValue) {
 			var colorObject = new THREE.Color(colorValue);
 			colorObject.setStyle(colorValue);
-			_.each(meshes, function (obj) {
+			_.each(meshes, function(obj) {
 				obj.material.emissive = colorObject;
 			});
 		});

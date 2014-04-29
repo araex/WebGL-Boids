@@ -12,7 +12,7 @@ require.config({
 
 	shim: {
 		threejs: {
-			"exports": "THREE" //attaches "Backbone" to the window object
+			"exports": "THREE"
 		},
 		stats: {
 			"exports": "Stats"
