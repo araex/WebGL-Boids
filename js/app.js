@@ -79,7 +79,6 @@ define([
 			var object = meshPradator.clone();
 			object.position = element.position;
 			scene.add(object);
-			meshes.push(object);
 		});
 	}
 

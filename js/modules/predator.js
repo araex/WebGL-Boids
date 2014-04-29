@@ -23,7 +23,6 @@ define([
 
             if(self.target === null || vectorToTarget.lengthSq() < swarm.killRadius * swarm.killRadius){
                 self.target = __pickNewTarget();
-                console.log(self.target);
             }
             __calcVelocity();
 
