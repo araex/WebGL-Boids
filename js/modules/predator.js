@@ -26,20 +26,13 @@ define([
                 console.log(self.target);
             }
             __calcVelocity();
-            __throttleSpeed();
-            
+
+            self.throttleSpeed(swarm.predatorMaxSpeed);
             self.applyVelocity(self.velocity, deltaT);
         };
 
         var __pickNewTarget = function () {
             return swarm.getPrey()[getRandomInt(0,swarm.getPrey().length-1)];
-        };
-
-        var __throttleSpeed = function () {
-            if (self.velocity.lengthSq() > swarm.predatorMaxSpeed * swarm.predatorMaxSpeed){
-                self.velocity.normalize();
-                self.velocity.multiplyScalar(swarm.predatorMaxSpeed);
-            }
         };
 
         var __calcVelocity = function () {

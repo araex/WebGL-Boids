@@ -12,7 +12,7 @@ define([
 		// public vars
 		self.neighbors;
 
-		// private vars
+		// state variables
 		var swarm;
 		var deltaT;
 
@@ -24,15 +24,18 @@ define([
 			__applyCenterForce(attraction);
 			__applyPredatorAvoidance(attraction);
 			__updateVelocity(attraction);
+
+			self.throttleSpeed(swarm.preyMaxSpeed);
 			self.applyVelocity(self.velocity, deltaT);
 		};
 
 		var __calcNeighbourAttraction = function () {
 			var attraction = new THREE.Vector3(0, 0, 0);
+			var distance = new THREE.Vector3(0, 0, 0);
 			var i;
 
 			_.each(self.neighbors, function (neighbor) {
-				var distance = new THREE.Vector3(0, 0, 0);
+				distance.set(0, 0, 0);
 				distance.subVectors(neighbor.position, self.position);
 
 				// using the squared length to increase performance
@@ -50,6 +53,7 @@ define([
 
 		var __applyPredatorAvoidance = function (attraction){
 			var distanceToPredator = new THREE.Vector3();
+
 			_.each(swarm.getPredators(), function (predator) {
 				distanceToPredator.subVectors(predator.position, self.position);
 				if (distanceToPredator.lengthSq() < swarm.fearRadius * swarm.fearRadius){
@@ -60,19 +64,16 @@ define([
 
 		var __applyCenterForce = function (attraction) {
 			var centerDistance = new THREE.Vector3(0, 0, 0);
+
 			centerDistance.sub(self.position);
 			attraction.add(centerDistance.multiplyScalar(swarm.preyCenterForce * centerDistance.lengthSq()));
 		};
 
 		var __updateVelocity = function (attraction) {
 			var velocityUpdate = attraction.clone();
+
 			velocityUpdate.multiplyScalar(swarm.preyAcceleration * deltaT);
 			self.velocity.add(velocityUpdate);
-
-			if (self.velocity.lengthSq() > swarm.preyMaxSpeed * swarm.preyMaxSpeed) {
-				self.velocity.normalize();
-				self.velocity.multiplyScalar(swarm.preyMaxSpeed);
-			}
 		};
 
 		var __init = function () {
